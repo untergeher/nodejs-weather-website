@@ -4,7 +4,6 @@ const hbs = require('hbs')
 const geocode = require('./utils/geocode.js')
 const forecast = require('./utils/forecast.js')
 
-
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -22,72 +21,72 @@ hbs.registerPartials(partialsPath)
 app.use(express.static(publicDirectoryPath))
 
 app.get('', (req, res) => {
-    res.render('index', {
-        title: 'Weather',
-        name: 'Metin Cavdar'
-    })
+  res.render('index', {
+    title: 'Weather',
+    name: 'Metin Cavdar',
+  })
 })
 
 app.get('/about', (req, res) => {
-    res.render('about', {
-        title: 'About Me',
-        name: 'Metin Cavdar'
-    })
+  res.render('about', {
+    title: 'About Me',
+    name: 'Metin Cavdar',
+  })
 })
 
 app.get('/help', (req, res) => {
-    res.render('help', {
-        helpText: 'This is some helpful text.',
-        title: 'Help',
-        name: 'Metin Cavdar'
-    })
+  res.render('help', {
+    helpText: 'This is some helpful text.',
+    title: 'Help',
+    name: 'Metin Cavdar',
+  })
 })
 
 app.get('/weather', (req, res) => {
-    if(!req.query.address){
-        return res.send({
-            error: 'You must provide an address'})
+  if (!req.query.address) {
+    return res.send({
+      error: 'You must provide an address',
+    })
+  }
+
+  geocode(req.query.address, (error, {location, latitude, longitude} = {}) => {
+    if (error) {
+      return res.send({
+        error: error,
+      })
     }
 
-    geocode(req.query.address, (error,{location,latitude,longitude}={}) => {
-        if (error) {
-            return res.send({
-                error: error
-            })
-        }
-    
-        forecast(latitude, longitude, (error, forecastData) => {
-            if(error){
-                return res.send({
-                    error: error
-                })
-            }
-            res.send({
-                location: location,
-                weather: forecastData,
-                address: req.query.address
-            })
-          })
-    
+    forecast(latitude, longitude, (error, forecastData) => {
+      if (error) {
+        return res.send({
+          error: error,
+        })
+      }
+      res.send({
+        location: location,
+        weather: forecastData,
+        address: req.query.address,
+      })
     })
+  })
 })
 
 app.get('/help/*', (req, res) => {
-    res.render('404', {
-        title: '404',
-        name: 'Metin Cavdar',
-        errorMessage: 'Help article not found.'
-    })
+  res.render('404', {
+    title: '404',
+    name: 'Metin Cavdar',
+    errorMessage: 'Help article not found.',
+  })
 })
 
 app.get('*', (req, res) => {
-    res.render('404', {
-        title: '404',
-        name: 'Metin Cavdar',
-        errorMessage: 'Page not found.'
-    })
+  res.render('404', {
+    title: '404',
+    name: 'Metin Cavdar',
+    errorMessage: 'Page not found.',
+  })
 })
 
 app.listen(port, () => {
-    console.log('Server is up on port ' + port + ' .')
+  console.log('Server is up on port ' + port + ' .')
 })

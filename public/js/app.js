@@ -7,21 +7,21 @@ const messageOne = document.querySelector('#message-1')
 const messageTwo = document.querySelector('#message-2')
 
 weatherForm.addEventListener('submit', (e) => {
-    e.preventDefault()
+  e.preventDefault()
 
-    messageTwo.textContent = 'Loading...'
-    messageOne.textContent = ''
+  messageTwo.textContent = 'Loading...'
+  messageOne.textContent = ''
 
-    const location = search.value
-    const url = '/weather?address=' + location
-    fetch(url).then((response)=>{
-        response.json().then((data)=>{
-            if(data.error){
-                messageTwo.textContent = data.error
-            } else{
-                messageOne.textContent = data.location
-                messageTwo.textContent = data.weather
-            }
-        })
+  const location = search.value
+  const url = '/weather?address=' + location
+  fetch(url).then((response) => {
+    response.json().then((data) => {
+      if (data.error) {
+        messageTwo.textContent = data.error
+      } else {
+        messageOne.textContent = data.location
+        messageTwo.textContent = data.weather
+      }
     })
+  })
 })
